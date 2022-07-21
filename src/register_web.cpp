@@ -2,8 +2,6 @@
 
 AsyncWebServer registration_server(80);
 
-DHT dht(getDhtPin(), DHTTYPE); // we have to instantiate this class in order for it to be available
-
 void registerHome(AsyncWebServerRequest *request) {
     request->send(200, "text/html", register_index_html);
 }
@@ -12,13 +10,37 @@ void registerNode(AsyncWebServerRequest *request) {
     request->send_P(200, "text/html", register_node_html, processor);
 }
 
+void webSetControlPointMac(AsyncWebServerRequest *request){
+    if(!request->hasParam("controlPointMac", true)){
+        request->send(400, "text/html", "Missing controlPointMac argument");
+        return;
+    }
+    
+    String mac;
+    mac = request->getParam("controlPointMac", true)->value();
+    
+    String regContent;
+    if (!mac.isEmpty()) {
+        setControlPointMac(mac);
+        saveAllPreferences();
+
+        regContent = "{\"Success\":\"saved control point mac to eeprom\"}";
+        request->send(200, "application/json", regContent);
+        
+        return;
+    }
+
+    regContent = "{\"Error\":\"404 not found\"}";
+    request->send(404, "application/json", regContent);
+}
+
 void webSetNodeId(AsyncWebServerRequest *request){
-    if(!request->hasParam("nodeId")){
+    if(!request->hasParam("nodeId", true)){
         request->send(400, "text/html", "Missing id argument");
         return;
     }
     
-    int nodeId = atoi(request->getParam("nodeId")->value().c_str());
+    int nodeId = atoi(request->getParam("nodeId", true)->value().c_str());
     
     String regContent;
     if (nodeId > 0) {
@@ -36,13 +58,13 @@ void webSetNodeId(AsyncWebServerRequest *request){
 }
 
 void setDht(AsyncWebServerRequest *request){
-    if(!request->hasParam("pin")){
+    if(!request->hasParam("pin", true)){
         request->send(400, "text/html", "Missing id argument");
         return;
     }
 
-    int dhtPin = atoi(request->getParam("pin")->value().c_str());
-    int dhtType = atoi(request->getParam("dhtType")->value().c_str());
+    int dhtPin = atoi(request->getParam("pin", true)->value().c_str());
+    int dhtType = atoi(request->getParam("dhtType", true)->value().c_str());
     
     String regContent;
     if (dhtPin > 0 && dhtType > 0) {
@@ -60,24 +82,6 @@ void setDht(AsyncWebServerRequest *request){
     request->send(404, "application/json", regContent);
 }
 
-String getDhtJson(){
-  StaticJsonDocument<500> doc;
-  Serial.println(dht.readTemperature());
-  doc["humidity"] = dht.readHumidity();
-  doc["celcius"] = dht.readTemperature();
-  doc["fahrenheit"] = dht.readTemperature(true);
-  
-  String output;
-  serializeJson(doc, output);
-
-  return output;
-}
-
-void handleDht(AsyncWebServerRequest *request){
-  String output = getDhtJson();
-  request->send(200, "application/json", output);
-}
-
 void restart(AsyncWebServerRequest *request){
   request->send(200, "application/json", "restarting");
 
@@ -92,25 +96,7 @@ void launchRegisterWeb(){
     registration_server.on("/setNodeId", webSetNodeId);
     registration_server.on("/setDht", setDht);
     registration_server.on("/restart", restart);
-    registration_server.on("/dht", handleDht);
+    registration_server.on("/setControlPointMac", HTTP_POST, webSetControlPointMac);
     registration_server.onNotFound(handleNotFound);
     registration_server.begin();
-}
-
-void initSensors(){
-    int dhtPin = getDhtPin();
-    int dhtType = getDhtType();
-    
-    // Only start DHT if we're actually using it
-    if(dhtPin > -1){
-      dht.setPin(dhtPin);
-      
-      if(dhtType == 11){
-        dht.setType(DHTTYPE);
-      }else{
-        dht.setType(DHTTYPE22);
-      }
-      
-      dht.begin();
-    }
 }

@@ -62,8 +62,8 @@ void launchWeb(){
     Serial.print("SoftAP IP: ");
     Serial.println(WiFi.softAPIP());
 
-    initial_server.on("/", wifiHome);
-    initial_server.on("/wifi-setup", wifiSetupPage);
+    initial_server.on("/", HTTP_GET, wifiHome);
+    initial_server.on("/wifi-setup", HTTP_GET, wifiSetupPage);
     initial_server.on("/setting", setParameters);
     initial_server.on("/clear", clearAllPreferences);
     initial_server.onNotFound(handleNotFound);

@@ -4,7 +4,7 @@ Preferences prefs;
 
 const char *prefsName = "nodePrefs";
 
-String ssid, pass, apiHost, name;
+String ssid, pass, apiHost, name, controlPointMac;
 uint16_t apiPort;
 int dhtType, dhtPin, nodeId;
 
@@ -14,6 +14,7 @@ void initPreferences(){
     pass = prefs.getString("pass", "");
     apiHost = prefs.getString("apiHost", "");
     name = prefs.getString("name", "");
+    controlPointMac = prefs.getString("controlPointMac", "");
     apiPort = prefs.getUInt("apiPort", 80);
     dhtType = prefs.getInt("dhtType", 0);
     dhtPin = prefs.getInt("dhtPin", -1);
@@ -27,6 +28,7 @@ void saveAllPreferences(){
     prefs.putString("pass", pass);
     prefs.putString("apiHost", apiHost);
     prefs.putString("name", name);
+    prefs.putString("controlPointMac", controlPointMac);
     prefs.putUInt("apiPort", apiPort);
     prefs.putInt("dhtType", dhtType);
     prefs.putInt("dhtPin", dhtPin);
@@ -63,6 +65,47 @@ String getName(){
     return name;
 }
 
+String getControlPointMac(){
+    return controlPointMac;
+}
+
+uint8_t * getControlPointMacArray(){
+    static uint8_t macArray[6];
+    char delim[] = ":";
+    //char *token;
+    char *strings[30];
+    int i = 0;
+
+    char *mac_arr = new char[controlPointMac.length() + 1];
+    strcpy(mac_arr, controlPointMac.c_str());
+    //sprintf(mac, "%s",controlPointMac.c_str());
+    Serial.println(mac_arr);
+
+    strings[i] = strtok(mac_arr, delim);
+    while(strings[i] != NULL){
+        strings[++i] = strtok(NULL, delim);
+    }
+
+    delete [] mac_arr;
+
+    for(int j = 0; j < i; j++){
+        macArray[j] = (int)strtol(strings[j], NULL, 16);
+    }
+
+    /*
+    token = strtok(&controlPointMac[0], delim);
+    int i = 0;
+    char *ptr;
+    while(token != NULL){
+        macArray[i] = strtol(token, &ptr, 16);
+        i++;
+        token = strtok(NULL, delim);
+    }
+    */
+
+    return macArray;
+}
+
 uint16_t getApiPort(){
     return apiPort;
 }
@@ -93,6 +136,10 @@ void setApiHost(String _apiHost){
 
 void setName(String _name){
     name = _name;
+}
+
+void setControlPointMac(String _controlPointMac){
+    controlPointMac = _controlPointMac;
 }
 
 void setApiPort(uint16_t _apiPort){

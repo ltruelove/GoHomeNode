@@ -12,6 +12,9 @@ String getSSID();
 String getPass();
 String getApiHost();
 String getName();
+String getControlPointMac();
+
+uint8_t * getControlPointMacArray();
 
 uint16_t getApiPort();
 
@@ -23,6 +26,7 @@ void setSSID(String _ssid);
 void setPass(String _pass);
 void setApiHost(String _apiHost);
 void setName(String _name);
+void setControlPointMac(String _controlPointMac);
 
 void setApiPort(uint16_t _apiPort);
 

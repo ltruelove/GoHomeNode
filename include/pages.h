@@ -16,7 +16,7 @@
             <table>
                 <tr>
                     <td width='100'><label>SSID: </label></td>
-                    <td>" + st +"</td>
+                    <td>%WIFIOPTIONS%</td>
                 </tr>
                 <tr>
                     <td><label>Key: </label></td>
@@ -56,7 +56,7 @@
         <script type='text/javascript'>
             var apiHost = '%APIHOST%';
         </script>
-            <script src='https://code.jquery.com/jquery-3.6.0.min.js' integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=' crossorigin='anonymous'></script>\r\n
+            <script src='https://code.jquery.com/jquery-3.6.0.min.js' integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=' crossorigin='anonymous'></script>
             <script type='text/javascript' src='%APIHOST%/js/registerNode.js'></script>
         </head>
         <body>
@@ -68,6 +68,10 @@
                     <tr>
                         <td><label>Name: </label></td>
                         <td><input type='text' id='typeName' value=''></td>
+                    </tr>
+                    <tr>
+                        <td width='100'><label>Control Point: </label></td>
+                        <td><select id='nodeControlPoint'></select></td>
                     </tr>
                     <tr>
                         <td><label>Type: </label></td>
