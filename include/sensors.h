@@ -10,6 +10,7 @@ void initSensors();
 float getTemperatureF();
 float getTemperatureC();
 float getHumidity();
+int getMoisture();
 
 #define DHTTYPE DHT11
 #define DHTTYPE22 DHT22

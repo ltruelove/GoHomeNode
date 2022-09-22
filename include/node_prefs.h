@@ -20,6 +20,7 @@ uint16_t getApiPort();
 
 int getDhtType();
 int getDhtPin();
+int getMoisturePin();
 int getNodeId();
 
 void setSSID(String _ssid);
@@ -32,6 +33,9 @@ void setApiPort(uint16_t _apiPort);
 
 void setDhtType(int _dhtType);
 void setDhtPin(int _dhtPin);
+void setMoisturePin(int _moisturePin);
 void setNodeId(int _nodeId);
+
+void clearPreferences();
 
 #endif

@@ -6,15 +6,23 @@
 #include "register_web.h"
 #include "broadcast_mode.h"
 
+#define uS_TO_S_FACTOR 1000000  /* Conversion factor for micro seconds to seconds */
+#define TIME_TO_SLEEP  300        /* Time ESP32 will go to sleep (in seconds) */
+
 unsigned long previousMillis = 0;
 unsigned long interval = 30000;
+unsigned long resetMillis = 0;
+unsigned long resetInterval = 4000;
 unsigned long previousMessageMillis = 0;   // Stores last time data was published
 const long broadcastInterval = 300000;        // Interval at which to publish sensor readings 300000 millis = 5 minutes
 bool isConnected = false;
 bool hasPreferences = false;
 String isGarage = "";
 String macAddress;
+String controlPointMacAddress;
 int statusCode;
+int NodeID = 0;
+int resetButtonPin = 12;
 
 void connectToWifi(const char *ssid, const char *key){
   WiFi.mode(WIFI_STA);
@@ -49,12 +57,19 @@ void setupAccessPoint(void)
 }
 
 void setup() {
+  delay(500);
   Serial.begin(115200);
+  
+  pinMode(resetButtonPin, INPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
   
   WiFi.disconnect();
 
   initPreferences();
-  hasPreferences = true;
+  if(!getSSID().isEmpty()){
+    hasPreferences = true;
+  }
 
   macAddress = WiFi.macAddress();
 
@@ -64,10 +79,10 @@ void setup() {
   if(ssid.isEmpty()){
     setupAccessPoint();
   }else{
-    int nodeId = getNodeId();
-    String mac = getControlPointMac();
+    NodeID = getNodeId();
+    controlPointMacAddress = getControlPointMac();
 
-    if(mac.isEmpty() || nodeId < 1){
+    if(controlPointMacAddress.isEmpty() || NodeID < 1){
       connectToWifi(ssid.c_str(), pass.c_str());
     
       if(WiFi.status() == WL_CONNECTED){
@@ -83,21 +98,50 @@ void setup() {
       initSensors();
       initBroadcast();
       broadcastData();
+
+      delay(500);
+
+      esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
+      esp_deep_sleep_start();
     }
   }
 }
 
 void loop() {
   if(!hasPreferences){
-    delay(1);
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(1000);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(1000);
   }else{
     delay(100);
 
     // increment our time counter
     unsigned long currentMillis = millis();
-    String mac = getControlPointMac();
 
-    if(!mac.isEmpty()){
+    if(digitalRead(resetButtonPin) == LOW){
+      resetMillis = currentMillis;
+    }
+
+    if(currentMillis - resetMillis >= resetInterval){
+      clearPreferences();
+      delay(100);
+      digitalWrite(LED_BUILTIN, HIGH);
+      delay(300);
+      digitalWrite(LED_BUILTIN, LOW);
+      delay(300);
+      digitalWrite(LED_BUILTIN, HIGH);
+      delay(300);
+      digitalWrite(LED_BUILTIN, LOW);
+      delay(300);
+      digitalWrite(LED_BUILTIN, HIGH);
+      delay(300);
+      digitalWrite(LED_BUILTIN, LOW);
+      delay(300);
+      ESP.restart();
+    }
+
+    if(!controlPointMacAddress.isEmpty() && NodeID > 0){
       if(currentMillis - previousMessageMillis >= broadcastInterval){
         previousMessageMillis = currentMillis;
 

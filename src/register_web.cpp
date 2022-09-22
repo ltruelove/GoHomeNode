@@ -59,7 +59,7 @@ void webSetNodeId(AsyncWebServerRequest *request){
 
 void setDht(AsyncWebServerRequest *request){
     if(!request->hasParam("pin", true)){
-        request->send(400, "text/html", "Missing id argument");
+        request->send(400, "text/html", "Missing pin argument");
         return;
     }
 
@@ -82,6 +82,29 @@ void setDht(AsyncWebServerRequest *request){
     request->send(404, "application/json", regContent);
 }
 
+void setMoisture(AsyncWebServerRequest *request){
+    if(!request->hasParam("pin", true)){
+        request->send(400, "text/html", "Missing pin argument");
+        return;
+    }
+
+    int moisturePin = atoi(request->getParam("pin", true)->value().c_str());
+    
+    String regContent;
+    if (moisturePin > 0) {
+        setMoisturePin(moisturePin);
+        saveAllPreferences();
+
+        regContent = "{\"Success\":\"saved sensor settings to eeprom\"}";
+        request->send(200, "application/json", regContent);
+        
+        return;
+    }
+
+    regContent = "{\"Error\":\"404 not found\"}";
+    request->send(404, "application/json", regContent);
+}
+
 void restart(AsyncWebServerRequest *request){
   request->send(200, "application/json", "restarting");
 
@@ -95,6 +118,7 @@ void launchRegisterWeb(){
     registration_server.on("/clear", clearAllPreferences);
     registration_server.on("/setNodeId", webSetNodeId);
     registration_server.on("/setDht", setDht);
+    registration_server.on("/setMoisture", setMoisture);
     registration_server.on("/restart", restart);
     registration_server.on("/setControlPointMac", HTTP_POST, webSetControlPointMac);
     registration_server.onNotFound(handleNotFound);

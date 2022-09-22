@@ -65,8 +65,9 @@ void broadcastData(){
     messageData.TemperatureF = getTemperatureF();
     messageData.TemperatureC = getTemperatureC();
     messageData.Humidity = getHumidity();
+    messageData.Moisture = getMoisture();
 
-    Serial.println(messageData.TemperatureF);
+    Serial.println(messageData.Moisture);
 
     esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &messageData, sizeof(messageData));
 

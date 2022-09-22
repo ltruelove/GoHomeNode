@@ -40,6 +40,10 @@ String processor(const String& var){
     return WiFi.localIP().toString();
   }
 
+  if(var == "DHTPIN"){
+    return (String)getDhtPin();
+  }
+
   return String();
 }
 

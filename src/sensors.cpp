@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "sensors.h"
 
 DHT dht(getDhtPin(), DHTTYPE); // we have to instantiate this class in order for it to be available
@@ -30,4 +31,13 @@ float getTemperatureC(){
 
 float getHumidity(){
     return dht.readHumidity();
+}
+
+int getMoisture(){
+  int pin = getMoisturePin();
+  if(pin > -1){
+    return analogRead(pin);
+  }else{
+    return 0;
+  }
 }

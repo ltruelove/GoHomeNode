@@ -6,7 +6,7 @@ const char *prefsName = "nodePrefs";
 
 String ssid, pass, apiHost, name, controlPointMac;
 uint16_t apiPort;
-int dhtType, dhtPin, nodeId;
+int dhtType, dhtPin, moisturePin, nodeId;
 
 void initPreferences(){
     prefs.begin(prefsName, true);
@@ -18,6 +18,7 @@ void initPreferences(){
     apiPort = prefs.getUInt("apiPort", 80);
     dhtType = prefs.getInt("dhtType", 0);
     dhtPin = prefs.getInt("dhtPin", -1);
+    moisturePin = prefs.getInt("moisturePin", -1);
     nodeId = prefs.getInt("nodeId", 0);
     prefs.end();
 }
@@ -32,6 +33,7 @@ void saveAllPreferences(){
     prefs.putUInt("apiPort", apiPort);
     prefs.putInt("dhtType", dhtType);
     prefs.putInt("dhtPin", dhtPin);
+    prefs.putInt("moisturePin", moisturePin);
     prefs.putInt("nodeId", nodeId);
     prefs.end();
 }
@@ -118,6 +120,10 @@ int getDhtPin(){
     return dhtPin;
 }
 
+int getMoisturePin(){
+    return moisturePin;
+}
+
 int getNodeId(){
     return nodeId;
 }
@@ -152,6 +158,10 @@ void setDhtType(int _dhtType){
 
 void setDhtPin(int _dhtPin){
     dhtPin = _dhtPin;
+}
+
+void setMoisturePin(int _moisturePin){
+    moisturePin = _moisturePin;
 }
 
 void setNodeId(int _nodeId){
