@@ -6,6 +6,7 @@ DHT dht(getDhtPin(), DHTTYPE); // we have to instantiate this class in order for
 void initSensors(){
     int dhtPin = getDhtPin();
     int dhtType = getDhtType();
+    int moisturePin = getMoisturePin();
     
     // Only start DHT if we're actually using it
     if(dhtPin > -1){
@@ -18,6 +19,13 @@ void initSensors(){
       }
       
       dht.begin();
+    }
+
+    if(moisturePin > 0){
+      pinMode(moisturePin, INPUT);
+      adcAttachPin(moisturePin);
+      analogReadResolution(11);
+      analogSetAttenuation(ADC_6db);
     }
 }
 

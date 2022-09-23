@@ -66,6 +66,7 @@ void setup() {
   
   WiFi.disconnect();
 
+  //clearPreferences();
   initPreferences();
   if(!getSSID().isEmpty()){
     hasPreferences = true;
