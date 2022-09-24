@@ -34,4 +34,6 @@ void pressMomentary(int msTime){
   digitalWrite(selectedMomentaryPin, LOW);
 }
 
-bool isToggleOn();
+bool isToggleOn(){
+  return toggleStatus;
+}

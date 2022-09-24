@@ -23,6 +23,11 @@ void initPreferences(){
     togglePin = prefs.getInt("togglePin", -1);
     momentaryPin = prefs.getInt("momentaryPin", -1);
     prefs.end();
+
+    Serial.println("Pins:");
+    Serial.println(moisturePin);
+    Serial.println(togglePin);
+    Serial.println("");
 }
 
 void saveAllPreferences(){
