@@ -22,6 +22,8 @@ int getDhtType();
 int getDhtPin();
 int getMoisturePin();
 int getNodeId();
+int getTogglePin();
+int getMomentaryPin();
 
 void setSSID(String _ssid);
 void setPass(String _pass);
@@ -35,6 +37,8 @@ void setDhtType(int _dhtType);
 void setDhtPin(int _dhtPin);
 void setMoisturePin(int _moisturePin);
 void setNodeId(int _nodeId);
+void setTogglePin(int _togglePin);
+void setMomentaryPin(int _momentaryPin);
 
 void clearPreferences();
 
