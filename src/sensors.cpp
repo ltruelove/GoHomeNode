@@ -24,8 +24,6 @@ void initSensors(){
     if(moisturePin > 0){
       pinMode(moisturePin, INPUT);
       adcAttachPin(moisturePin);
-      analogReadResolution(11);
-      analogSetAttenuation(ADC_6db);
     }
 }
 
