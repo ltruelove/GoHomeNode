@@ -15,6 +15,7 @@ struct SwitchCommand {
     bool triggerToggle;
     bool pressMomentary;
     int msMomentaryPress;
+    bool triggerUpdate;
 };
 
 NodeReading messageData;
@@ -42,6 +43,10 @@ void followInstructions(SwitchCommand inst){
     if(inst.pressMomentary){
         Serial.print("Pressing momentary");
         pressMomentary(inst.msMomentaryPress);
+    }
+
+    if(inst.triggerUpdate){
+        broadcastData();
     }
 }
 
