@@ -1,4 +1,5 @@
 #include "broadcast_mode.h"
+#include "switches.h"
 
 struct NodeReading {
     int nodeId;
@@ -10,7 +11,15 @@ struct NodeReading {
     bool IsClosed;
 };
 
+struct SwitchCommand {
+    bool triggerToggle;
+    bool pressMomentary;
+    int msMomentaryPress;
+    bool triggerUpdate;
+};
+
 NodeReading messageData;
+SwitchCommand instructions;
 esp_now_peer_info_t peerInfo;
 uint8_t *broadcastAddress;
 
@@ -23,6 +32,37 @@ int32_t getWiFiChannel(const char *ssid) {
         }
     }
     return 0;
+}
+
+void followInstructions(SwitchCommand inst){
+    if(inst.triggerToggle){
+        Serial.print("Flipping toggle");
+        flipToggleSwitch();
+        //make sure we update the status
+        broadcastData();
+    }
+
+    if(inst.pressMomentary){
+        Serial.print("Pressing momentary");
+        pressMomentary(inst.msMomentaryPress);
+    }
+
+    if(inst.triggerUpdate){
+        broadcastData();
+    }
+}
+
+void OnDataRecv(const uint8_t * mac_addr, const uint8_t *incomingData, int len) { 
+    // Copies the sender mac address to a string
+    char macStr[18];
+    Serial.print("Packet received from: ");
+    snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
+            mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
+    Serial.println(macStr);
+    memcpy(&instructions, incomingData, sizeof(instructions));
+    
+    // store the reading for fetching later
+    followInstructions(instructions);
 }
 
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
@@ -46,6 +86,7 @@ void initBroadcast(){
         return;
     }
 
+    esp_now_register_recv_cb(OnDataRecv);
     esp_now_register_send_cb(OnDataSent);
 
     broadcastAddress = getControlPointMacArray();
@@ -66,6 +107,7 @@ void broadcastData(){
     messageData.TemperatureC = getTemperatureC();
     messageData.Humidity = getHumidity();
     messageData.Moisture = getMoisture();
+    messageData.IsClosed = isToggleOn();
 
     esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &messageData, sizeof(messageData));
 

@@ -105,6 +105,61 @@ void setMoisture(AsyncWebServerRequest *request){
     request->send(404, "application/json", regContent);
 }
 
+void setToggle(AsyncWebServerRequest *request){
+    if(!request->hasParam("pin", true)){
+        request->send(400, "text/html", "Missing pin argument");
+        return;
+    }
+
+    if(!request->hasParam("IsClosedOn", true)){
+        request->send(400, "text/html", "Missing IsClosedOn argument");
+        return;
+    }
+
+    int pin = atoi(request->getParam("pin", true)->value().c_str());
+    bool isClosedOn = request->getParam("IsClosedOn", true)->value() == "true";
+    Serial.print("Is closed on: ");
+    Serial.println(isClosedOn);
+    
+    String regContent;
+    if (pin > 0) {
+        setTogglePin(pin);
+        setIsclosedOn(isClosedOn);
+        saveAllPreferences();
+
+        regContent = "{\"Success\":\"saved switch settings to eeprom\"}";
+        request->send(200, "application/json", regContent);
+        
+        return;
+    }
+
+    regContent = "{\"Error\":\"404 not found\"}";
+    request->send(404, "application/json", regContent);
+}
+
+void setMomentary(AsyncWebServerRequest *request){
+    if(!request->hasParam("pin", true)){
+        request->send(400, "text/html", "Missing pin argument");
+        return;
+    }
+
+    int pin = atoi(request->getParam("pin", true)->value().c_str());
+    
+    String regContent;
+    if (pin > 0) {
+        setMomentaryPin(pin);
+        saveAllPreferences();
+
+        regContent = "{\"Success\":\"saved switch settings to eeprom\"}";
+        request->send(200, "application/json", regContent);
+        
+        return;
+    }
+
+    regContent = "{\"Error\":\"404 not found\"}";
+    request->send(404, "application/json", regContent);
+}
+
 void restart(AsyncWebServerRequest *request){
   request->send(200, "application/json", "restarting");
 
@@ -119,6 +174,8 @@ void launchRegisterWeb(){
     registration_server.on("/setNodeId", webSetNodeId);
     registration_server.on("/setDht", setDht);
     registration_server.on("/setMoisture", setMoisture);
+    registration_server.on("/setToggle", setToggle);
+    registration_server.on("/setMomentary", setMomentary);
     registration_server.on("/restart", restart);
     registration_server.on("/setControlPointMac", HTTP_POST, webSetControlPointMac);
     registration_server.onNotFound(handleNotFound);

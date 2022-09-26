@@ -6,7 +6,8 @@ const char *prefsName = "nodePrefs";
 
 String ssid, pass, apiHost, name, controlPointMac;
 uint16_t apiPort;
-int dhtType, dhtPin, moisturePin, nodeId;
+int dhtType, dhtPin, moisturePin, nodeId, togglePin, momentaryPin;
+bool isClosedOn;
 
 void initPreferences(){
     prefs.begin(prefsName, true);
@@ -20,6 +21,9 @@ void initPreferences(){
     dhtPin = prefs.getInt("dhtPin", -1);
     moisturePin = prefs.getInt("moisturePin", -1);
     nodeId = prefs.getInt("nodeId", 0);
+    togglePin = prefs.getInt("togglePin", -1);
+    momentaryPin = prefs.getInt("momentaryPin", -1);
+    isClosedOn = prefs.getBool("isClosedOn", true); //use this for closing circuits that turn off things like relays, etc when they get voltage
     prefs.end();
 }
 
@@ -35,6 +39,9 @@ void saveAllPreferences(){
     prefs.putInt("dhtPin", dhtPin);
     prefs.putInt("moisturePin", moisturePin);
     prefs.putInt("nodeId", nodeId);
+    prefs.putInt("togglePin", togglePin);
+    prefs.putInt("momentaryPin", momentaryPin);
+    prefs.putBool("isClosedOn", isClosedOn);
     prefs.end();
 }
 
@@ -74,13 +81,11 @@ String getControlPointMac(){
 uint8_t * getControlPointMacArray(){
     static uint8_t macArray[6];
     char delim[] = ":";
-    //char *token;
     char *strings[30];
     int i = 0;
 
     char *mac_arr = new char[controlPointMac.length() + 1];
     strcpy(mac_arr, controlPointMac.c_str());
-    //sprintf(mac, "%s",controlPointMac.c_str());
     Serial.println(mac_arr);
 
     strings[i] = strtok(mac_arr, delim);
@@ -93,17 +98,6 @@ uint8_t * getControlPointMacArray(){
     for(int j = 0; j < i; j++){
         macArray[j] = (int)strtol(strings[j], NULL, 16);
     }
-
-    /*
-    token = strtok(&controlPointMac[0], delim);
-    int i = 0;
-    char *ptr;
-    while(token != NULL){
-        macArray[i] = strtol(token, &ptr, 16);
-        i++;
-        token = strtok(NULL, delim);
-    }
-    */
 
     return macArray;
 }
@@ -126,6 +120,18 @@ int getMoisturePin(){
 
 int getNodeId(){
     return nodeId;
+}
+
+int getTogglePin(){
+    return togglePin;
+}
+
+int getMomentaryPin(){
+    return momentaryPin;
+}
+
+bool getIsClosedOn(){
+    return isClosedOn;
 }
 
 void setSSID(String _ssid){
@@ -166,4 +172,16 @@ void setMoisturePin(int _moisturePin){
 
 void setNodeId(int _nodeId){
     nodeId = _nodeId;
+}
+
+void setTogglePin(int _togglePin){
+    togglePin = _togglePin;
+}
+
+void setMomentaryPin(int _momentaryPin){
+    momentaryPin = _momentaryPin;
+}
+
+void setIsclosedOn(bool _isClosedOn){
+    isClosedOn = _isClosedOn;
 }

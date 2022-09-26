@@ -2,6 +2,7 @@
 
 #include "node_prefs.h"
 #include "sensors.h"
+#include "switches.h"
 #include "initial_server.h"
 #include "register_web.h"
 #include "broadcast_mode.h"
@@ -97,13 +98,15 @@ void setup() {
       }
     }else{
       initSensors();
+      initSwitches();
       initBroadcast();
       broadcastData();
 
       delay(500);
 
-      esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
-      esp_deep_sleep_start();
+      // Can't wake up from deep sleep for incoming esp now commands
+      //esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
+      //esp_deep_sleep_start();
     }
   }
 }
