@@ -38,6 +38,8 @@ void followInstructions(SwitchCommand inst){
     if(inst.triggerToggle){
         Serial.print("Flipping toggle");
         flipToggleSwitch();
+        //make sure we update the status
+        broadcastData();
     }
 
     if(inst.pressMomentary){
@@ -105,6 +107,7 @@ void broadcastData(){
     messageData.TemperatureC = getTemperatureC();
     messageData.Humidity = getHumidity();
     messageData.Moisture = getMoisture();
+    messageData.IsClosed = isToggleOn();
 
     esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &messageData, sizeof(messageData));
 
