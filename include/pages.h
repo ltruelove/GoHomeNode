@@ -107,7 +107,7 @@
                         <td><label>Closed toggle status: </label></td>
                     </tr>
                     <tr class='switchOptions'>
-                        <td><label><input type='radio' name='IsClosedOn' value='1'> On</label></td>
+                        <td><label><input type='radio' name='IsClosedOn' value='1' checked='checked'> On</label></td>
                         <td><label><input type='radio' name='IsClosedOn' value='0'> Off</label></td>
                     </tr>
                     <tr>

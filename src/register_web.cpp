@@ -111,13 +111,20 @@ void setToggle(AsyncWebServerRequest *request){
         return;
     }
 
+    if(!request->hasParam("IsClosedOn", true)){
+        request->send(400, "text/html", "Missing IsClosedOn argument");
+        return;
+    }
+
     int pin = atoi(request->getParam("pin", true)->value().c_str());
-    Serial.print("Toggle pin: ");
-    Serial.println(pin);
+    bool isClosedOn = request->getParam("IsClosedOn", true)->value() == "true";
+    Serial.print("Is closed on: ");
+    Serial.println(isClosedOn);
     
     String regContent;
     if (pin > 0) {
         setTogglePin(pin);
+        setIsclosedOn(isClosedOn);
         saveAllPreferences();
 
         regContent = "{\"Success\":\"saved switch settings to eeprom\"}";

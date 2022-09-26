@@ -24,6 +24,7 @@ int getMoisturePin();
 int getNodeId();
 int getTogglePin();
 int getMomentaryPin();
+bool getIsClosedOn();
 
 void setSSID(String _ssid);
 void setPass(String _pass);
@@ -39,6 +40,7 @@ void setMoisturePin(int _moisturePin);
 void setNodeId(int _nodeId);
 void setTogglePin(int _togglePin);
 void setMomentaryPin(int _momentaryPin);
+void setIsclosedOn(bool _isClosedOn);
 
 void clearPreferences();
 

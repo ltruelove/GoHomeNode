@@ -7,12 +7,21 @@ int selectedTogglePin, selectedMomentaryPin;
 void initSwitches(){
     selectedTogglePin = getTogglePin();
     selectedMomentaryPin = getMomentaryPin();
+    bool isClosedOn = getIsClosedOn();
 
     if(selectedTogglePin > -1){
       pinMode(selectedTogglePin, OUTPUT);
       //default to off;
-      digitalWrite(selectedTogglePin, LOW);
-      toggleStatus = false;
+      if(isClosedOn){
+        digitalWrite(selectedTogglePin, LOW);
+        toggleStatus = false;
+      }else{
+        //use this for devices that use an active current to
+        //make a connection open instead of closed
+        //still defaults to off in that respect
+        digitalWrite(selectedTogglePin, HIGH);
+        toggleStatus = true;
+      }
     }
 
     if(selectedMomentaryPin > -1){

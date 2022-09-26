@@ -7,6 +7,7 @@ const char *prefsName = "nodePrefs";
 String ssid, pass, apiHost, name, controlPointMac;
 uint16_t apiPort;
 int dhtType, dhtPin, moisturePin, nodeId, togglePin, momentaryPin;
+bool isClosedOn;
 
 void initPreferences(){
     prefs.begin(prefsName, true);
@@ -22,12 +23,8 @@ void initPreferences(){
     nodeId = prefs.getInt("nodeId", 0);
     togglePin = prefs.getInt("togglePin", -1);
     momentaryPin = prefs.getInt("momentaryPin", -1);
+    isClosedOn = prefs.getBool("isClosedOn", true); //use this for closing circuits that turn off things like relays, etc when they get voltage
     prefs.end();
-
-    Serial.println("Pins:");
-    Serial.println(moisturePin);
-    Serial.println(togglePin);
-    Serial.println("");
 }
 
 void saveAllPreferences(){
@@ -44,6 +41,7 @@ void saveAllPreferences(){
     prefs.putInt("nodeId", nodeId);
     prefs.putInt("togglePin", togglePin);
     prefs.putInt("momentaryPin", momentaryPin);
+    prefs.putBool("isClosedOn", isClosedOn);
     prefs.end();
 }
 
@@ -132,6 +130,10 @@ int getMomentaryPin(){
     return momentaryPin;
 }
 
+bool getIsClosedOn(){
+    return isClosedOn;
+}
+
 void setSSID(String _ssid){
     ssid = _ssid;
 }
@@ -178,4 +180,8 @@ void setTogglePin(int _togglePin){
 
 void setMomentaryPin(int _momentaryPin){
     momentaryPin = _momentaryPin;
+}
+
+void setIsclosedOn(bool _isClosedOn){
+    isClosedOn = _isClosedOn;
 }
