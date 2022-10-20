@@ -71,6 +71,7 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
 }
 
 void initBroadcast(){
+    WiFi.disconnect();
     WiFi.mode(WIFI_STA);
     String ssid = getSSID();
     int32_t channel = getWiFiChannel(ssid.c_str());
