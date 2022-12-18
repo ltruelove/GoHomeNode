@@ -24,6 +24,14 @@ String controlPointMacAddress;
 int statusCode;
 int NodeID = 0;
 int resetButtonPin = 12;
+int resetState;
+int lastResetState = LOW;
+int toggleButtonPin = 13;
+int toggleButtonState;
+int lastToggleButtonState = LOW;
+int momentaryButtonPin = 14;
+int momentaryButtonState;
+int lastMomentaryButtonState = LOW;
 
 void connectToWifi(const char *ssid, const char *key){
   WiFi.mode(WIFI_STA);
@@ -125,6 +133,29 @@ void loop() {
 
     if(digitalRead(resetButtonPin) == LOW){
       resetMillis = currentMillis;
+    }
+
+    toggleButtonState = digitalRead(toggleButtonPin);
+
+    if(toggleButtonState == HIGH){
+      lastToggleButtonState = HIGH;
+    }else{
+      if(lastToggleButtonState == HIGH){
+        lastToggleButtonState = LOW;
+        flipToggleSwitch();
+      }
+    }
+
+    momentaryButtonState = digitalRead(momentaryButtonPin);
+    
+    if(momentaryButtonState == HIGH){
+      setMomentary(HIGH);
+      lastMomentaryButtonState = HIGH;
+    }else{
+      if(lastMomentaryButtonState == HIGH){
+        lastMomentaryButtonState = LOW;
+        setMomentary(LOW);
+      }
     }
 
     if(currentMillis - resetMillis >= resetInterval){

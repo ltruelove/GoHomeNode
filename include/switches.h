@@ -6,6 +6,7 @@
 
 void initSwitches();
 void flipToggleSwitch();
+void setMomentary(int setting);
 void pressMomentary(int msTime);
 
 bool isToggleOn();

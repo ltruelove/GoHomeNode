@@ -6,6 +6,7 @@ int selectedTogglePin, selectedMomentaryPin;
 
 void initSwitches(){
     selectedTogglePin = getTogglePin();
+    Serial.println(selectedTogglePin);
     selectedMomentaryPin = getMomentaryPin();
     bool isClosedOn = getIsClosedOn();
 
@@ -30,12 +31,18 @@ void initSwitches(){
 }
 
 void flipToggleSwitch(){
-  int status = digitalRead(selectedTogglePin);
-  digitalWrite(selectedTogglePin, !status);
-  //if the status we got from the read is 0
-  //we have then switched to HIGH (or 1)
-  //therefore the status would be true/closed
-  toggleStatus = status < 1;
+  if(selectedTogglePin > -1){
+    int status = digitalRead(selectedTogglePin);
+    digitalWrite(selectedTogglePin, !status);
+    //if the status we got from the read is 0
+    //we have then switched to HIGH (or 1)
+    //therefore the status would be true/closed
+    toggleStatus = status < 1;
+  }
+}
+
+void setMomentary(int setting){
+  digitalWrite(selectedMomentaryPin, setting);
 }
 
 void pressMomentary(int msTime){
