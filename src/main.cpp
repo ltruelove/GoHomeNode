@@ -135,26 +135,30 @@ void loop() {
       resetMillis = currentMillis;
     }
 
-    toggleButtonState = digitalRead(toggleButtonPin);
+    if(getTogglePin() > -1){
+      toggleButtonState = digitalRead(toggleButtonPin);
 
-    if(toggleButtonState == HIGH){
-      lastToggleButtonState = HIGH;
-    }else{
-      if(lastToggleButtonState == HIGH){
-        lastToggleButtonState = LOW;
-        flipToggleSwitch();
+      if(toggleButtonState == HIGH){
+        lastToggleButtonState = HIGH;
+      }else{
+        if(lastToggleButtonState == HIGH){
+          lastToggleButtonState = LOW;
+          flipToggleSwitch();
+        }
       }
     }
 
-    momentaryButtonState = digitalRead(momentaryButtonPin);
-    
-    if(momentaryButtonState == HIGH){
-      setMomentary(HIGH);
-      lastMomentaryButtonState = HIGH;
-    }else{
-      if(lastMomentaryButtonState == HIGH){
-        lastMomentaryButtonState = LOW;
-        setMomentary(LOW);
+    if(getMomentaryPin() > -1){
+      momentaryButtonState = digitalRead(momentaryButtonPin);
+      
+      if(momentaryButtonState == HIGH){
+        setMomentary(HIGH);
+        lastMomentaryButtonState = HIGH;
+      }else{
+        if(lastMomentaryButtonState == HIGH){
+          lastMomentaryButtonState = LOW;
+          setMomentary(LOW);
+        }
       }
     }
 
