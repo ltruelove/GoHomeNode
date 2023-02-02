@@ -8,6 +8,7 @@ struct NodeReading {
     float Humidity;
     int Moisture;
     int ResistorValue;
+    int MagneticValue;
     bool IsClosed;
 };
 
@@ -108,6 +109,8 @@ void broadcastData(){
     messageData.TemperatureC = getTemperatureC();
     messageData.Humidity = getHumidity();
     messageData.Moisture = getMoisture();
+    messageData.ResistorValue = getResistor();
+    messageData.MagneticValue = getMagnetic();
     messageData.IsClosed = isToggleOn();
 
     esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &messageData, sizeof(messageData));

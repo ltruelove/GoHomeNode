@@ -24,7 +24,7 @@ void webSetControlPointMac(AsyncWebServerRequest *request){
         setControlPointMac(mac);
         saveAllPreferences();
 
-        regContent = "{\"Success\":\"saved control point mac to eeprom\"}";
+        regContent = "{\"Success\":\"saved control point mac to flash\"}";
         request->send(200, "application/json", regContent);
         
         return;
@@ -47,7 +47,7 @@ void webSetNodeId(AsyncWebServerRequest *request){
         setNodeId(nodeId);
         saveAllPreferences();
 
-        regContent = "{\"Success\":\"saved Node ID to eeprom\"}";
+        regContent = "{\"Success\":\"saved Node ID to flash\"}";
         request->send(200, "application/json", regContent);
         
         return;
@@ -72,7 +72,7 @@ void setDht(AsyncWebServerRequest *request){
         setDhtType(dhtType);
         saveAllPreferences();
 
-        regContent = "{\"Success\":\"saved DHT settings to eeprom\"}";
+        regContent = "{\"Success\":\"saved DHT settings to flash\"}";
         request->send(200, "application/json", regContent);
         
         return;
@@ -95,7 +95,53 @@ void setMoisture(AsyncWebServerRequest *request){
         setMoisturePin(moisturePin);
         saveAllPreferences();
 
-        regContent = "{\"Success\":\"saved sensor settings to eeprom\"}";
+        regContent = "{\"Success\":\"saved sensor settings to flash\"}";
+        request->send(200, "application/json", regContent);
+        
+        return;
+    }
+
+    regContent = "{\"Error\":\"404 not found\"}";
+    request->send(404, "application/json", regContent);
+}
+
+void setResistor(AsyncWebServerRequest *request){
+    if(!request->hasParam("pin", true)){
+        request->send(400, "text/html", "Missing pin argument");
+        return;
+    }
+
+    int resistorPin = atoi(request->getParam("pin", true)->value().c_str());
+    
+    String regContent;
+    if (resistorPin > 0) {
+        setResistorPin(resistorPin);
+        saveAllPreferences();
+
+        regContent = "{\"Success\":\"saved sensor settings to flash\"}";
+        request->send(200, "application/json", regContent);
+        
+        return;
+    }
+
+    regContent = "{\"Error\":\"404 not found\"}";
+    request->send(404, "application/json", regContent);
+}
+
+void setMagnetic(AsyncWebServerRequest *request){
+    if(!request->hasParam("pin", true)){
+        request->send(400, "text/html", "Missing pin argument");
+        return;
+    }
+
+    int magneticPin = atoi(request->getParam("pin", true)->value().c_str());
+    
+    String regContent;
+    if (magneticPin > 0) {
+        setMagneticPin(magneticPin);
+        saveAllPreferences();
+
+        regContent = "{\"Success\":\"saved sensor settings to flash\"}";
         request->send(200, "application/json", regContent);
         
         return;
@@ -127,7 +173,7 @@ void setToggle(AsyncWebServerRequest *request){
         setIsclosedOn(isClosedOn);
         saveAllPreferences();
 
-        regContent = "{\"Success\":\"saved switch settings to eeprom\"}";
+        regContent = "{\"Success\":\"saved switch settings to flash\"}";
         request->send(200, "application/json", regContent);
         
         return;
@@ -150,7 +196,7 @@ void setMomentary(AsyncWebServerRequest *request){
         setMomentaryPin(pin);
         saveAllPreferences();
 
-        regContent = "{\"Success\":\"saved switch settings to eeprom\"}";
+        regContent = "{\"Success\":\"saved switch settings to flash\"}";
         request->send(200, "application/json", regContent);
         
         return;
@@ -174,6 +220,8 @@ void launchRegisterWeb(){
     registration_server.on("/setNodeId", webSetNodeId);
     registration_server.on("/setDht", setDht);
     registration_server.on("/setMoisture", setMoisture);
+    registration_server.on("/setResistor", setResistor);
+    registration_server.on("/setMagnetic", setMagnetic);
     registration_server.on("/setToggle", setToggle);
     registration_server.on("/setMomentary", setMomentary);
     registration_server.on("/restart", restart);

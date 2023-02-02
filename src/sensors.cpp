@@ -19,6 +19,7 @@ void initSensors(){
       }
       
       dht.begin();
+      Serial.println(dhtPin);
     }
 
     if(moisturePin > 0){
@@ -28,6 +29,7 @@ void initSensors(){
 }
 
 float getTemperatureF(){
+      Serial.println(dht.readTemperature(true));
     return dht.readTemperature(true);
 }
 
@@ -43,6 +45,24 @@ int getMoisture(){
   int pin = getMoisturePin();
   if(pin > -1){
     return analogRead(pin);
+  }else{
+    return 0;
+  }
+}
+
+int getResistor(){
+  int pin = getResistorPin();
+  if(pin > -1){
+    return analogRead(pin);
+  }else{
+    return 0;
+  }
+}
+
+int getMagnetic(){
+  int pin = getMagneticPin();
+  if(pin > -1){
+    return digitalRead(pin);
   }else{
     return 0;
   }

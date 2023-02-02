@@ -11,6 +11,8 @@ float getTemperatureF();
 float getTemperatureC();
 float getHumidity();
 int getMoisture();
+int getResistor();
+int getMagnetic();
 
 #define DHTTYPE DHT11
 #define DHTTYPE22 DHT22

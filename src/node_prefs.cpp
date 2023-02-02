@@ -6,7 +6,7 @@ const char *prefsName = "nodePrefs";
 
 String ssid, pass, apiHost, name, controlPointMac;
 uint16_t apiPort;
-int dhtType, dhtPin, moisturePin, nodeId, togglePin, momentaryPin;
+int dhtType, dhtPin, moisturePin, resistorPin, magneticPin, nodeId, togglePin, momentaryPin;
 bool isClosedOn;
 
 void initPreferences(){
@@ -20,6 +20,8 @@ void initPreferences(){
     dhtType = prefs.getInt("dhtType", 0);
     dhtPin = prefs.getInt("dhtPin", -1);
     moisturePin = prefs.getInt("moisturePin", -1);
+    resistorPin = prefs.getInt("resistorPin", -1);
+    magneticPin = prefs.getInt("magneticPin", -1);
     nodeId = prefs.getInt("nodeId", 0);
     togglePin = prefs.getInt("togglePin", -1);
     momentaryPin = prefs.getInt("momentaryPin", -1);
@@ -38,6 +40,8 @@ void saveAllPreferences(){
     prefs.putInt("dhtType", dhtType);
     prefs.putInt("dhtPin", dhtPin);
     prefs.putInt("moisturePin", moisturePin);
+    prefs.putInt("resistorPin", resistorPin);
+    prefs.putInt("magneticPin", magneticPin);
     prefs.putInt("nodeId", nodeId);
     prefs.putInt("togglePin", togglePin);
     prefs.putInt("momentaryPin", momentaryPin);
@@ -118,6 +122,14 @@ int getMoisturePin(){
     return moisturePin;
 }
 
+int getResistorPin(){
+    return resistorPin;
+}
+
+int getMagneticPin(){
+    return magneticPin;
+}
+
 int getNodeId(){
     return nodeId;
 }
@@ -168,6 +180,14 @@ void setDhtPin(int _dhtPin){
 
 void setMoisturePin(int _moisturePin){
     moisturePin = _moisturePin;
+}
+
+void setResistorPin(int _resistorPin){
+    resistorPin = _resistorPin;
+}
+
+void setMagneticPin(int _magneticPin){
+    magneticPin = _magneticPin;
 }
 
 void setNodeId(int _nodeId){
