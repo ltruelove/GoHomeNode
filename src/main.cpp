@@ -1,6 +1,7 @@
 #include <Arduino.h>
 
 #include "node_prefs.h"
+#include "settings.h"
 #include "sensors.h"
 #include "switches.h"
 #include "initial_server.h"
@@ -32,6 +33,9 @@ int lastToggleButtonState = LOW;
 int momentaryButtonPin = 14;
 int momentaryButtonState;
 int lastMomentaryButtonState = LOW;
+
+int togglePinSetting = 0;
+int momentaryPinSetting = 0;
 
 void connectToWifi(const char *ssid, const char *key){
   WiFi.mode(WIFI_STA);
@@ -75,20 +79,30 @@ void setup() {
   
   WiFi.disconnect();
 
-  //clearPreferences();
-  initPreferences();
-  if(!getSSID().isEmpty()){
+  //eraseSettings();
+  //esp_restart();
+
+  if(!initSettings()){
+    Serial.println("There was an error initializing settings");
+    esp_restart();
+  }
+
+  String ssid = getSSID();
+
+  if(!ssid.isEmpty()){
     hasPreferences = true;
   }
 
-  macAddress = WiFi.macAddress();
-
-  String ssid = getSSID();
-  String pass = getPass();
-
-  if(ssid.isEmpty()){
+  if(!hasPreferences){
     setupAccessPoint();
   }else{
+
+    macAddress = WiFi.macAddress();
+
+    String pass = getPass();
+    togglePinSetting = getTogglePin();
+    momentaryPinSetting = getMomentaryPin();
+
     NodeID = getNodeId();
     controlPointMacAddress = getControlPointMac();
 
@@ -120,6 +134,7 @@ void setup() {
 }
 
 void loop() {
+  if(false){
   if(!hasPreferences){
     digitalWrite(LED_BUILTIN, HIGH);
     delay(1000);
@@ -135,7 +150,7 @@ void loop() {
       resetMillis = currentMillis;
     }
 
-    if(getTogglePin() > -1){
+    if(togglePinSetting > 0){
       toggleButtonState = digitalRead(toggleButtonPin);
 
       if(toggleButtonState == HIGH){
@@ -148,7 +163,7 @@ void loop() {
       }
     }
 
-    if(getMomentaryPin() > -1){
+    if(momentaryPinSetting > 0){
       momentaryButtonState = digitalRead(momentaryButtonPin);
       
       if(momentaryButtonState == HIGH){
@@ -165,18 +180,6 @@ void loop() {
     if(currentMillis - resetMillis >= resetInterval){
       clearPreferences();
       delay(100);
-      digitalWrite(LED_BUILTIN, HIGH);
-      delay(300);
-      digitalWrite(LED_BUILTIN, LOW);
-      delay(300);
-      digitalWrite(LED_BUILTIN, HIGH);
-      delay(300);
-      digitalWrite(LED_BUILTIN, LOW);
-      delay(300);
-      digitalWrite(LED_BUILTIN, HIGH);
-      delay(300);
-      digitalWrite(LED_BUILTIN, LOW);
-      delay(300);
       ESP.restart();
     }
 
@@ -207,5 +210,6 @@ void loop() {
       }
     }
 
+  }
   }
 }

@@ -2,11 +2,10 @@
 #define NODE_PREFS
 
 #include <Preferences.h>
+#include "settings.h"
 
-void initPreferences();
 void clearPreferences();
 void saveNodeId(int id);
-void saveAllPreferences();
 
 String getSSID();
 String getPass();
@@ -14,7 +13,7 @@ String getApiHost();
 String getName();
 String getControlPointMac();
 
-uint8_t * getControlPointMacArray();
+uint8_t * getControlPointMacArray(String controlPointMac);
 
 uint16_t getApiPort();
 

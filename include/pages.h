@@ -59,6 +59,12 @@
         </script>
             <script src='https://code.jquery.com/jquery-3.6.0.min.js' integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=' crossorigin='anonymous'></script>
             <script type='text/javascript' src='%APIHOST%/js/registerNode.js'></script>
+        <style>
+            td {
+                padding-bottom: 15px;
+                vertical-align: top;
+            }
+        </style>
         </head>
         <body>
             <h3>GoHome Node Registration</h3>
@@ -67,7 +73,7 @@
                 <input type='hidden' id='nodeName' value='%NODENAME%'>
                 <table>
                     <tr>
-                        <td><label>Name: </label></td>
+                        <td width="50%"><label>I/O Name: </label></td>
                         <td><input type='text' id='typeName' value=''></td>
                     </tr>
                     <tr>

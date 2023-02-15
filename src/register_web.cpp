@@ -22,7 +22,6 @@ void webSetControlPointMac(AsyncWebServerRequest *request){
     String regContent;
     if (!mac.isEmpty()) {
         setControlPointMac(mac);
-        saveAllPreferences();
 
         regContent = "{\"Success\":\"saved control point mac to flash\"}";
         request->send(200, "application/json", regContent);
@@ -45,7 +44,6 @@ void webSetNodeId(AsyncWebServerRequest *request){
     String regContent;
     if (nodeId > 0) {
         setNodeId(nodeId);
-        saveAllPreferences();
 
         regContent = "{\"Success\":\"saved Node ID to flash\"}";
         request->send(200, "application/json", regContent);
@@ -70,7 +68,6 @@ void setDht(AsyncWebServerRequest *request){
     if (dhtPin > 0 && dhtType > 0) {
         setDhtPin(dhtPin);
         setDhtType(dhtType);
-        saveAllPreferences();
 
         regContent = "{\"Success\":\"saved DHT settings to flash\"}";
         request->send(200, "application/json", regContent);
@@ -93,7 +90,6 @@ void setMoisture(AsyncWebServerRequest *request){
     String regContent;
     if (moisturePin > 0) {
         setMoisturePin(moisturePin);
-        saveAllPreferences();
 
         regContent = "{\"Success\":\"saved sensor settings to flash\"}";
         request->send(200, "application/json", regContent);
@@ -116,7 +112,6 @@ void setResistor(AsyncWebServerRequest *request){
     String regContent;
     if (resistorPin > 0) {
         setResistorPin(resistorPin);
-        saveAllPreferences();
 
         regContent = "{\"Success\":\"saved sensor settings to flash\"}";
         request->send(200, "application/json", regContent);
@@ -139,7 +134,6 @@ void setMagnetic(AsyncWebServerRequest *request){
     String regContent;
     if (magneticPin > 0) {
         setMagneticPin(magneticPin);
-        saveAllPreferences();
 
         regContent = "{\"Success\":\"saved sensor settings to flash\"}";
         request->send(200, "application/json", regContent);
@@ -171,7 +165,6 @@ void setToggle(AsyncWebServerRequest *request){
     if (pin > 0) {
         setTogglePin(pin);
         setIsclosedOn(isClosedOn);
-        saveAllPreferences();
 
         regContent = "{\"Success\":\"saved switch settings to flash\"}";
         request->send(200, "application/json", regContent);
@@ -194,7 +187,6 @@ void setMomentary(AsyncWebServerRequest *request){
     String regContent;
     if (pin > 0) {
         setMomentaryPin(pin);
-        saveAllPreferences();
 
         regContent = "{\"Success\":\"saved switch settings to flash\"}";
         request->send(200, "application/json", regContent);

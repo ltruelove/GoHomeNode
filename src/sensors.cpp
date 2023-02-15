@@ -9,7 +9,7 @@ void initSensors(){
     int moisturePin = getMoisturePin();
     
     // Only start DHT if we're actually using it
-    if(dhtPin > -1){
+    if(dhtPin > 0){
       dht.setPin(dhtPin);
       
       if(dhtType == 11){
@@ -43,7 +43,7 @@ float getHumidity(){
 
 int getMoisture(){
   int pin = getMoisturePin();
-  if(pin > -1){
+  if(pin > 0){
     return analogRead(pin);
   }else{
     return 0;
@@ -52,7 +52,7 @@ int getMoisture(){
 
 int getResistor(){
   int pin = getResistorPin();
-  if(pin > -1){
+  if(pin > 0){
     return analogRead(pin);
   }else{
     return 0;
@@ -61,7 +61,7 @@ int getResistor(){
 
 int getMagnetic(){
   int pin = getMagneticPin();
-  if(pin > -1){
+  if(pin > 0){
     return digitalRead(pin);
   }else{
     return 0;

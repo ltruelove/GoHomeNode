@@ -1,5 +1,6 @@
 #include "broadcast_mode.h"
 #include "switches.h"
+#include "settings.h"
 
 struct NodeReading {
     int nodeId;
@@ -17,6 +18,7 @@ struct SwitchCommand {
     bool pressMomentary;
     int msMomentaryPress;
     bool triggerUpdate;
+    bool eraseSettings;
 };
 
 NodeReading messageData;
@@ -36,6 +38,11 @@ int32_t getWiFiChannel(const char *ssid) {
 }
 
 void followInstructions(SwitchCommand inst){
+    if(inst.eraseSettings){
+        eraseSettings();
+        esp_restart();
+    }
+
     if(inst.triggerToggle){
         Serial.print("Flipping toggle");
         flipToggleSwitch();
@@ -91,7 +98,7 @@ void initBroadcast(){
     esp_now_register_recv_cb(OnDataRecv);
     esp_now_register_send_cb(OnDataSent);
 
-    broadcastAddress = getControlPointMacArray();
+    broadcastAddress = getControlPointMacArray(getControlPointMac());
 
     memcpy(peerInfo.peer_addr, broadcastAddress, 6);
     peerInfo.encrypt = false;

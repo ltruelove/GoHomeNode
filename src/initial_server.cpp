@@ -13,6 +13,7 @@ void wifiSetupPage(AsyncWebServerRequest *request){
 }
 
 void setParameters(AsyncWebServerRequest *request){
+    
     String ssid, pass, apiHost, name;
     int apiPort = 80;
 
@@ -42,9 +43,8 @@ void setParameters(AsyncWebServerRequest *request){
         setApiHost(apiHost);
         setApiPort(apiPort);
         setName(name);
-        saveAllPreferences();
 
-        String message = "{\"Success\":\"saved to eeprom... reset to boot into new wifi\"}";
+        String message = "{\"Success\":\"saved to flash... reset to boot into new wifi\"}";
         request->send(200, "application/json", message);
         
         delay(100);

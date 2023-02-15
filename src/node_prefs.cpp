@@ -4,85 +4,40 @@ Preferences prefs;
 
 const char *prefsName = "nodePrefs";
 
-String ssid, pass, apiHost, name, controlPointMac;
-uint16_t apiPort;
-int dhtType, dhtPin, moisturePin, resistorPin, magneticPin, nodeId, togglePin, momentaryPin;
-bool isClosedOn;
-
-void initPreferences(){
-    prefs.begin(prefsName, true);
-    ssid = prefs.getString("ssid", "");
-    pass = prefs.getString("pass", "");
-    apiHost = prefs.getString("apiHost", "");
-    name = prefs.getString("name", "");
-    controlPointMac = prefs.getString("controlPointMac", "");
-    apiPort = prefs.getUInt("apiPort", 80);
-    dhtType = prefs.getInt("dhtType", 0);
-    dhtPin = prefs.getInt("dhtPin", -1);
-    moisturePin = prefs.getInt("moisturePin", -1);
-    resistorPin = prefs.getInt("resistorPin", -1);
-    magneticPin = prefs.getInt("magneticPin", -1);
-    nodeId = prefs.getInt("nodeId", 0);
-    togglePin = prefs.getInt("togglePin", -1);
-    momentaryPin = prefs.getInt("momentaryPin", -1);
-    isClosedOn = prefs.getBool("isClosedOn", true); //use this for closing circuits that turn off things like relays, etc when they get voltage
-    prefs.end();
-}
-
-void saveAllPreferences(){
-    prefs.begin(prefsName, false);
-    prefs.putString("ssid", ssid);
-    prefs.putString("pass", pass);
-    prefs.putString("apiHost", apiHost);
-    prefs.putString("name", name);
-    prefs.putString("controlPointMac", controlPointMac);
-    prefs.putUInt("apiPort", apiPort);
-    prefs.putInt("dhtType", dhtType);
-    prefs.putInt("dhtPin", dhtPin);
-    prefs.putInt("moisturePin", moisturePin);
-    prefs.putInt("resistorPin", resistorPin);
-    prefs.putInt("magneticPin", magneticPin);
-    prefs.putInt("nodeId", nodeId);
-    prefs.putInt("togglePin", togglePin);
-    prefs.putInt("momentaryPin", momentaryPin);
-    prefs.putBool("isClosedOn", isClosedOn);
-    prefs.end();
-}
+const char *SSID = "ssid", *PASS = "pass", *API_HOST = "apiHost", *NODE_NAME = "name", *CTRL_PT_MAC = "controlPointMac", *API_PORT = "apiPort",
+*DHT_TYPE = "dhtType", *DHT_PIN = "dhtPin", *MOISTURE_PIN = "moisturePin", *RESISTOR_PIN = "resistorPin", *MAGNETIC_PIN = "magneticPin", *NODE_ID = "nodeId",
+*TOGGLE_PIN = "togglePin", *MOMENTARY_PIN = "momentaryPin", *IS_CLOSED_ON = "isClosedOn";
 
 void clearPreferences()
 {
-  prefs.begin(prefsName, false);
-  prefs.clear();
-  prefs.end();
+    eraseSettings();
 }
 
 void saveNodeId(int id){
-  prefs.begin(prefsName, false);
-  prefs.putUInt("nodeId", id);
-  prefs.end();
+    setIntValue(id, NODE_ID);
 }
 
 String getSSID(){
-    return ssid;
+    return getStringValue(SSID);
 }
 
 String getPass(){
-    return pass;
+    return getStringValue(PASS);
 }
 
 String getApiHost(){
-    return apiHost;
+    return getStringValue(API_HOST);
 }
 
 String getName(){
-    return name;
+    return getStringValue(NODE_NAME);
 }
 
 String getControlPointMac(){
-    return controlPointMac;
+    return getStringValue(CTRL_PT_MAC);
 }
 
-uint8_t * getControlPointMacArray(){
+uint8_t * getControlPointMacArray(String controlPointMac){
     static uint8_t macArray[6];
     char delim[] = ":";
     char *strings[30];
@@ -107,101 +62,101 @@ uint8_t * getControlPointMacArray(){
 }
 
 uint16_t getApiPort(){
-    return apiPort;
+    return getIntValue(API_PORT);
 }
 
 int getDhtType(){
-    return dhtType;
+    return getIntValue(DHT_TYPE);
 }
 
 int getDhtPin(){
-    return dhtPin;
+    return getIntValue(DHT_PIN);
 }
 
 int getMoisturePin(){
-    return moisturePin;
+    return getIntValue(MOISTURE_PIN);
 }
 
 int getResistorPin(){
-    return resistorPin;
+    return getIntValue(RESISTOR_PIN);
 }
 
 int getMagneticPin(){
-    return magneticPin;
+    return getIntValue(MAGNETIC_PIN);
 }
 
 int getNodeId(){
-    return nodeId;
+    return getIntValue(NODE_ID);
 }
 
 int getTogglePin(){
-    return togglePin;
+    return getIntValue(TOGGLE_PIN);
 }
 
 int getMomentaryPin(){
-    return momentaryPin;
+    return getIntValue(MOMENTARY_PIN);
 }
 
 bool getIsClosedOn(){
-    return isClosedOn;
+    return getIntValue(IS_CLOSED_ON) == 1;
 }
 
 void setSSID(String _ssid){
-    ssid = _ssid;
+    setStringValue(_ssid.c_str(), SSID);
 }
 
 void setPass(String _pass){
-    pass = _pass;
+    setStringValue(_pass.c_str(), PASS);
 }
 
 void setApiHost(String _apiHost){
-    apiHost = _apiHost;
+    setStringValue(_apiHost.c_str(), API_HOST);
 }
 
 void setName(String _name){
-    name = _name;
+    setStringValue(_name.c_str(), NODE_NAME);
 }
 
 void setControlPointMac(String _controlPointMac){
-    controlPointMac = _controlPointMac;
+    setStringValue(_controlPointMac.c_str(), CTRL_PT_MAC);
 }
 
 void setApiPort(uint16_t _apiPort){
-    apiPort = _apiPort;
+    setIntValue(_apiPort, API_PORT);
 }
 
 void setDhtType(int _dhtType){
-    dhtType = _dhtType;
+    setIntValue(_dhtType, DHT_TYPE);
 }
 
 void setDhtPin(int _dhtPin){
-    dhtPin = _dhtPin;
+    setIntValue(_dhtPin, DHT_PIN);
 }
 
 void setMoisturePin(int _moisturePin){
-    moisturePin = _moisturePin;
+    setIntValue(_moisturePin, MOISTURE_PIN);
 }
 
 void setResistorPin(int _resistorPin){
-    resistorPin = _resistorPin;
+    setIntValue(_resistorPin, RESISTOR_PIN);
 }
 
 void setMagneticPin(int _magneticPin){
-    magneticPin = _magneticPin;
+    setIntValue(_magneticPin, MAGNETIC_PIN);
 }
 
 void setNodeId(int _nodeId){
-    nodeId = _nodeId;
+    setIntValue(_nodeId, NODE_ID);
 }
 
 void setTogglePin(int _togglePin){
-    togglePin = _togglePin;
+    setIntValue(_togglePin, TOGGLE_PIN);
 }
 
 void setMomentaryPin(int _momentaryPin){
-    momentaryPin = _momentaryPin;
+    setIntValue(_momentaryPin, MOMENTARY_PIN);
 }
 
 void setIsclosedOn(bool _isClosedOn){
-    isClosedOn = _isClosedOn;
+    setIntValue(_isClosedOn ? 1 : 0, IS_CLOSED_ON);
 }
