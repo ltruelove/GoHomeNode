@@ -1,7 +1,7 @@
 #ifndef NODE_PREFS
 #define NODE_PREFS
 
-#include <Preferences.h>
+#include "Arduino.h"
 #include "settings.h"
 
 void clearPreferences();

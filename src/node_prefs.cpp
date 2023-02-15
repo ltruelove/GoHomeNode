@@ -1,7 +1,5 @@
 #include "node_prefs.h"
 
-Preferences prefs;
-
 const char *prefsName = "nodePrefs";
 
 const char *SSID = "ssid", *PASS = "pass", *API_HOST = "apiHost", *NODE_NAME = "name", *CTRL_PT_MAC = "controlPointMac", *API_PORT = "apiPort",
@@ -40,22 +38,22 @@ String getControlPointMac(){
 uint8_t * getControlPointMacArray(String controlPointMac){
     static uint8_t macArray[6];
     char delim[] = ":";
-    char *strings[30];
+    char *Strings[30];
     int i = 0;
 
     char *mac_arr = new char[controlPointMac.length() + 1];
     strcpy(mac_arr, controlPointMac.c_str());
     Serial.println(mac_arr);
 
-    strings[i] = strtok(mac_arr, delim);
-    while(strings[i] != NULL){
-        strings[++i] = strtok(NULL, delim);
+    Strings[i] = strtok(mac_arr, delim);
+    while(Strings[i] != NULL){
+        Strings[++i] = strtok(NULL, delim);
     }
 
     delete [] mac_arr;
 
     for(int j = 0; j < i; j++){
-        macArray[j] = (int)strtol(strings[j], NULL, 16);
+        macArray[j] = (int)strtol(Strings[j], NULL, 16);
     }
 
     return macArray;
