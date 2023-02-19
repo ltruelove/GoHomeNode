@@ -134,7 +134,6 @@ void setup() {
 }
 
 void loop() {
-  if(false){
   if(!hasPreferences){
     digitalWrite(LED_BUILTIN, HIGH);
     delay(1000);
@@ -210,6 +209,5 @@ void loop() {
       }
     }
 
-  }
   }
 }

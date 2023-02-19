@@ -78,6 +78,16 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
   Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }
 
+void addPeer(uint8_t* mac){
+    memcpy(peerInfo.peer_addr, mac, 6);
+    peerInfo.encrypt = false;
+    
+    if (esp_now_add_peer(&peerInfo) != ESP_OK){
+        Serial.println("Failed to add peer");
+        return;
+    }
+}
+
 void initBroadcast(){
     WiFi.disconnect();
     WiFi.mode(WIFI_STA);
@@ -100,13 +110,8 @@ void initBroadcast(){
 
     broadcastAddress = getControlPointMacArray(getControlPointMac());
 
-    memcpy(peerInfo.peer_addr, broadcastAddress, 6);
-    peerInfo.encrypt = false;
-    
-    //Add peer        
-    if (esp_now_add_peer(&peerInfo) != ESP_OK){
-        Serial.println("Failed to add peer");
-        return;
+    if(!esp_now_is_peer_exist(broadcastAddress)){
+        addPeer(broadcastAddress);
     }
 }
 
@@ -119,6 +124,10 @@ void broadcastData(){
     messageData.ResistorValue = getResistor();
     messageData.MagneticValue = getMagnetic();
     messageData.IsClosed = isToggleOn();
+
+    if(!esp_now_is_peer_exist(broadcastAddress)){
+        addPeer(broadcastAddress);
+    }
 
     esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &messageData, sizeof(messageData));
 
