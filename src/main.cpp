@@ -15,6 +15,7 @@ unsigned long previousMillis = 0;
 unsigned long interval = 30000;
 unsigned long resetMillis = 0;
 unsigned long resetInterval = 4000;
+unsigned long restartInterval = 86400000;
 unsigned long previousMessageMillis = 0;   // Stores last time data was published
 const long broadcastInterval = 300000;        // Interval at which to publish sensor readings 300000 millis = 5 minutes
 bool isConnected = false;
@@ -174,6 +175,11 @@ void loop() {
           setMomentary(LOW);
         }
       }
+    }
+
+    // restart every once in a while, currently 1 day
+    if(currentMillis  >= restartInterval){
+      ESP.restart();
     }
 
     if(currentMillis - resetMillis >= resetInterval){
