@@ -22,6 +22,7 @@ void exitUpdateMode(AsyncWebServerRequest *request){
 void launchUpdateModeWeb(){
     update_mode_server.on("/", updateModeHome);
     update_mode_server.on("/exit", exitUpdateMode);
+    update_mode_server.on("/version", nodeVersion);
     update_mode_server.onNotFound(handleNotFound);
 
     AsyncElegantOTA.begin(&update_mode_server);

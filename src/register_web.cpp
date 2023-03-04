@@ -219,6 +219,7 @@ void launchRegisterWeb(){
     registration_server.on("/setMomentary", setMomentary);
     registration_server.on("/restart", restart);
     registration_server.on("/setControlPointMac", HTTP_POST, webSetControlPointMac);
+    registration_server.on("/version", nodeVersion);
     registration_server.onNotFound(handleNotFound);
     registration_server.begin();
 }

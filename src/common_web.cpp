@@ -1,4 +1,5 @@
 #include "common_web.h"
+#include "SPIFFS.h"
 
 String processor(const String& var){
 
@@ -13,6 +14,10 @@ String processor(const String& var){
 
   if(var == "APIHOSTIP"){
     return getApiHost();
+  }
+
+  if(var == "VERSION"){
+    return getVersion();
   }
 
   if(var == "APIHOST"){
@@ -100,4 +105,8 @@ void clearAllPreferences(AsyncWebServerRequest *request){
 
 void handleNotFound(AsyncWebServerRequest *request) {
   request->send(404, "text/plain", "File not found");
+}
+
+void nodeVersion(AsyncWebServerRequest *request) {
+    request->send(SPIFFS, "/node_version.html", String(), false, processor);
 }

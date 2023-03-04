@@ -4,7 +4,7 @@ const char *prefsName = "nodePrefs";
 
 const char *SSID = "ssid", *PASS = "pass", *API_HOST = "apiHost", *NODE_NAME = "name", *CTRL_PT_MAC = "controlPointMac", *API_PORT = "apiPort",
 *DHT_TYPE = "dhtType", *DHT_PIN = "dhtPin", *MOISTURE_PIN = "moisturePin", *RESISTOR_PIN = "resistorPin", *MAGNETIC_PIN = "magneticPin", *NODE_ID = "nodeId",
-*TOGGLE_PIN = "togglePin", *MOMENTARY_PIN = "momentaryPin", *IS_CLOSED_ON = "isClosedOn";
+*TOGGLE_PIN = "togglePin", *MOMENTARY_PIN = "momentaryPin", *IS_CLOSED_ON = "isClosedOn", *VERSION = "version";
 
 void clearPreferences()
 {
@@ -29,6 +29,10 @@ String getApiHost(){
 
 String getName(){
     return getStringValue(NODE_NAME);
+}
+
+String getVersion(){
+    return getStringValue(VERSION);
 }
 
 String getControlPointMac(){
@@ -157,4 +161,8 @@ void setMomentaryPin(int _momentaryPin){
 
 void setIsclosedOn(bool _isClosedOn){
     setIntValue(_isClosedOn ? 1 : 0, IS_CLOSED_ON);
+}
+
+void setVersion(String _version){
+    setStringValue(_version.c_str(), VERSION);
 }

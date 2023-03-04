@@ -12,6 +12,7 @@ String getPass();
 String getApiHost();
 String getName();
 String getControlPointMac();
+String getVersion();
 
 uint8_t * getControlPointMacArray(String controlPointMac);
 
@@ -32,6 +33,7 @@ void setPass(String _pass);
 void setApiHost(String _apiHost);
 void setName(String _name);
 void setControlPointMac(String _controlPointMac);
+void setVersion(String _version);
 
 void setApiPort(uint16_t _apiPort);
 

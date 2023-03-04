@@ -11,5 +11,6 @@ String processor(const String& var);
 String scanNetworks();
 void clearAllPreferences(AsyncWebServerRequest *request);
 void handleNotFound(AsyncWebServerRequest *request);
+void nodeVersion(AsyncWebServerRequest *request);
 
 #endif

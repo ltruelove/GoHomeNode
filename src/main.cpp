@@ -13,6 +13,8 @@
 #define uS_TO_S_FACTOR 1000000  /* Conversion factor for micro seconds to seconds */
 #define TIME_TO_SLEEP  300        /* Time ESP32 will go to sleep (in seconds) */
 
+const String version = "0.1.0";
+
 unsigned long previousMillis = 0;
 unsigned long interval = 30000;
 unsigned long resetMillis = 0;
@@ -92,6 +94,8 @@ void setup() {
     Serial.println("There was an error initializing settings");
     esp_restart();
   }
+
+  setVersion(version);
 
   String ssid = getSSID();
 
