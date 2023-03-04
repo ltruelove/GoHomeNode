@@ -1,13 +1,14 @@
 #include "register_web.h"
+#include "SPIFFS.h"
 
 AsyncWebServer registration_server(80);
 
 void registerHome(AsyncWebServerRequest *request) {
-    request->send(200, "text/html", register_index_html);
+    request->send(SPIFFS, "/register_index.html");
 }
 
 void registerNode(AsyncWebServerRequest *request) {
-    request->send_P(200, "text/html", register_node_html, processor);
+    request->send(SPIFFS, "/register_node.html", String(), false, processor);
 }
 
 void webSetControlPointMac(AsyncWebServerRequest *request){

@@ -1,56 +1,4 @@
-#ifndef PAGE_TEXT
-#define PAGE_TEXT
-
-  const char wifi_index_html[] PROGMEM = R"rawliteral(<!DOCTYPE HTML>
-  <html><h3>GoHome Node WiFi Selection</h3>
-  <p><a href='/wifi-setup'>Go To WiFi Form</a></p>
-  <p><a href='/clear'>Clear Preferences (CAREFUL!)</a></p>
-  </html>)rawliteral";
-
-    const char wifi_select_form[] PROGMEM = R"rawliteral(<!DOCTYPE HTML>
-    <!DOCTYPE HTML>
-    <html>
-        <h3>GoHome Node WiFi Setup</h3>
-        <p>%IPPLACEHOLDER%</p>
-        <form method='get' action='setting'>
-            <table>
-                <tr>
-                    <td width='100'><label>SSID: </label></td>
-                    <td>%WIFIOPTIONS%</td>
-                </tr>
-                <tr>
-                    <td><label>Key: </label></td>
-                    <td><input type='password' name='pass' value='' length=64></td>
-                </tr>
-                <tr>
-                    <td><label>Node Name: </label></td>
-                    <td><input type='text' name='name'></td>
-                </tr>
-                <tr>
-                    <td><label>API Host: </label></td>
-                    <td><p>http:// <input type='text' name='apiHost' value='' length=32></p></td>
-                </tr>
-                <tr>
-                    <td><label>API PORT: </label></td>
-                    <td><input type='number' name='apiPort' value='' length=5></td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td><input type='submit'></td>
-                </tr>
-            </table>
-        </form>
-    </html>
-    )rawliteral";
-
-    const char register_index_html[] PROGMEM = R"rawliteral(<!DOCTYPE HTML>
-    <html>
-        <h3>GoHome Node Registration</h3>
-        <p><a href='/register'>Go To Registration Form</a></p>
-        <p><a href='/clear'>Clear Preferences (CAREFUL!)</a></p>
-    </html>)rawliteral";
-
-    const char register_node_html[] PROGMEM = R"rawliteral(<!DOCTYPE HTML>
+<!DOCTYPE HTML>
     <html>
         <head>
         <script type='text/javascript'>
@@ -140,5 +88,3 @@
             </form>
         </body>
     </html>
-    )rawliteral";
-#endif

@@ -1,15 +1,16 @@
 #include "initial_server.h"
+#include "SPIFFS.h"
 
 String st;
 String homeContent;
 AsyncWebServer initial_server(80);
 
 void wifiHome(AsyncWebServerRequest *request) {
-    request->send(200, "text/html", wifi_index_html);
+    request->send(SPIFFS, "/rwifi_index.html");
 }
 
 void wifiSetupPage(AsyncWebServerRequest *request){
-  request->send_P(200, "text/html", wifi_select_form, processor);
+    request->send(SPIFFS, "/wifi_select_form.html", String(), false, processor);
 }
 
 void setParameters(AsyncWebServerRequest *request){

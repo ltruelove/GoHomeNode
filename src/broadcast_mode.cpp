@@ -19,6 +19,7 @@ struct SwitchCommand {
     int msMomentaryPress;
     bool triggerUpdate;
     bool eraseSettings;
+    bool updateMode;
 };
 
 NodeReading messageData;
@@ -57,6 +58,13 @@ void followInstructions(SwitchCommand inst){
 
     if(inst.triggerUpdate){
         broadcastData();
+    }
+    
+    // puts the node into OTA update mode
+    if(inst.updateMode){
+        setStringValue("update", "updateMode");
+        delay(100);
+        esp_restart();
     }
 }
 
