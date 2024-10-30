@@ -101,9 +101,11 @@ void setup() {
 
   if(!ssid.isEmpty()){
     hasPreferences = true;
+    Serial.println("Preferences found");
   }
 
   if(!hasPreferences){
+    Serial.println("Preferences not found");
     setupAccessPoint();
   }else{
     String updateMode = getStringValue("updateMode");

@@ -58,7 +58,6 @@ void setIntValue(int32_t value, const char *name){
 }
 
 void setStringValue(const char *value, const char *name){
-    openHandle();
     if(!openHandle()){
         return;
     }
@@ -74,7 +73,6 @@ void setStringValue(const char *value, const char *name){
 int32_t getIntValue(const char *name){
     int32_t intVal = 0;
 
-    openHandle();
     if(!openHandle()){
         return intVal;
     }
@@ -99,7 +97,6 @@ char* getStringValue(const char *name){
     char* defaultString = new char[1];
     strcpy(defaultString, "");
 
-    openHandle();
     if(!openHandle()){
         return defaultString;
     }
