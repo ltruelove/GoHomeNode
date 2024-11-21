@@ -13,7 +13,7 @@
 #define uS_TO_S_FACTOR 1000000  /* Conversion factor for micro seconds to seconds */
 #define TIME_TO_SLEEP  300        /* Time ESP32 will go to sleep (in seconds) */
 
-const String version = "0.1.0";
+const String nodeVersionString = "0.1.0";
 
 unsigned long previousMillis = 0;
 unsigned long interval = 30000;
@@ -32,10 +32,10 @@ int NodeID = 0;
 int resetButtonPin = 12;
 int resetState;
 int lastResetState = LOW;
-int toggleButtonPin = 13;
+int toggleButtonPin = 18;
 int toggleButtonState;
 int lastToggleButtonState = LOW;
-int momentaryButtonPin = 14;
+int momentaryButtonPin = 19;
 int momentaryButtonState;
 int lastMomentaryButtonState = LOW;
 
@@ -95,7 +95,14 @@ void setup() {
     esp_restart();
   }
 
-  setVersion(version);
+  initPreferences();
+
+  String existingVersion = getVersion();
+
+  if(existingVersion != nodeVersionString){
+    Serial.println("Version mismatch, updating");
+    setVersion(nodeVersionString);
+  }
 
   String ssid = getSSID();
 
@@ -200,10 +207,16 @@ void loop() {
 
     // restart every once in a while, currently 1 day
     if(currentMillis  >= restartInterval){
+      Serial.println("Restart interval hit, restarting");
       ESP.restart();
     }
 
     if(currentMillis - resetMillis >= resetInterval){
+      Serial.println("************************************");
+      Serial.println("Current Millis: " + String(currentMillis));
+      Serial.println("Reset Millis: " + String(resetMillis));
+      Serial.println("Resetting preferences");
+      Serial.println("************************************");
       clearPreferences();
       delay(100);
       ESP.restart();

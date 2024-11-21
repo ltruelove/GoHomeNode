@@ -6,9 +6,46 @@ const char *SSID = "ssid", *PASS = "pass", *API_HOST = "apiHost", *NODE_NAME = "
 *DHT_TYPE = "dhtType", *DHT_PIN = "dhtPin", *MOISTURE_PIN = "moisturePin", *RESISTOR_PIN = "resistorPin", *MAGNETIC_PIN = "magneticPin", *NODE_ID = "nodeId",
 *TOGGLE_PIN = "togglePin", *MOMENTARY_PIN = "momentaryPin", *IS_CLOSED_ON = "isClosedOn", *VERSION = "version";
 
+String ssid;
+String pass;
+String apiHost;
+String name;
+String controlPointMac;
+String version;
+uint16_t apiPort;
+int dhtType;
+int dhtPin;
+int moisturePin;
+int resistorPin;
+int magneticPin;
+int nodeId;
+int togglePin;
+int momentaryPin;
+bool isClosedOn;
+
 void clearPreferences()
 {
     eraseSettings();
+}
+
+void initPreferences()
+{
+    ssid = getStringValue(SSID);
+    pass = getStringValue(PASS);
+    apiHost = getStringValue(API_HOST);
+    name = getStringValue(NODE_NAME);
+    controlPointMac = getStringValue(CTRL_PT_MAC);
+    version = getStringValue(VERSION);
+    apiPort = getIntValue(API_PORT);
+    dhtType = getIntValue(DHT_TYPE);
+    dhtPin = getIntValue(DHT_PIN);
+    moisturePin = getIntValue(MOISTURE_PIN);
+    resistorPin = getIntValue(RESISTOR_PIN);
+    magneticPin = getIntValue(MAGNETIC_PIN);
+    nodeId = getIntValue(NODE_ID);
+    togglePin = getIntValue(TOGGLE_PIN);
+    momentaryPin = getIntValue(MOMENTARY_PIN);
+    isClosedOn = getIntValue(IS_CLOSED_ON) == 1;
 }
 
 void saveNodeId(int id){
@@ -16,27 +53,27 @@ void saveNodeId(int id){
 }
 
 String getSSID(){
-    return getStringValue(SSID);
+    return ssid;
 }
 
 String getPass(){
-    return getStringValue(PASS);
+    return pass;
 }
 
 String getApiHost(){
-    return getStringValue(API_HOST);
+    return apiHost;
 }
 
 String getName(){
-    return getStringValue(NODE_NAME);
+    return name;
 }
 
 String getVersion(){
-    return getStringValue(VERSION);
+    return version;
 }
 
 String getControlPointMac(){
-    return getStringValue(CTRL_PT_MAC);
+    return controlPointMac;
 }
 
 uint8_t * getControlPointMacArray(String controlPointMac){
@@ -64,43 +101,43 @@ uint8_t * getControlPointMacArray(String controlPointMac){
 }
 
 uint16_t getApiPort(){
-    return getIntValue(API_PORT);
+    return apiPort;
 }
 
 int getDhtType(){
-    return getIntValue(DHT_TYPE);
+    return dhtType;
 }
 
 int getDhtPin(){
-    return getIntValue(DHT_PIN);
+    return dhtPin;
 }
 
 int getMoisturePin(){
-    return getIntValue(MOISTURE_PIN);
+    return moisturePin;
 }
 
 int getResistorPin(){
-    return getIntValue(RESISTOR_PIN);
+    return resistorPin;
 }
 
 int getMagneticPin(){
-    return getIntValue(MAGNETIC_PIN);
+    return magneticPin;
 }
 
 int getNodeId(){
-    return getIntValue(NODE_ID);
+    return nodeId;
 }
 
 int getTogglePin(){
-    return getIntValue(TOGGLE_PIN);
+    return togglePin;
 }
 
 int getMomentaryPin(){
-    return getIntValue(MOMENTARY_PIN);
+    return momentaryPin;
 }
 
 bool getIsClosedOn(){
-    return getIntValue(IS_CLOSED_ON) == 1;
+    return isClosedOn;
 }
 
 void setSSID(String _ssid){

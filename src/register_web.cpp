@@ -203,10 +203,12 @@ void restart(AsyncWebServerRequest *request){
   request->send(200, "application/json", "restarting");
 
   delay(100);
+  Serial.println("Restart command received, restarting");
   ESP.restart();
 }
 
 void launchRegisterWeb(){
+    Serial.println("Launching register web");
     registration_server.on("/", registerHome);
     registration_server.on("/register", registerNode);
     registration_server.on("/clear", clearAllPreferences);

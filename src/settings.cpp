@@ -6,7 +6,6 @@
 #include "nvs_flash.h"
 #include "nvs.h"
 
-nvs_handle_t my_handle;
 
 bool initSettings(){
   // Initialize NVS
@@ -35,8 +34,8 @@ bool eraseSettings(){
     return true;
 }
 
-bool openHandle(){
-    esp_err_t err = nvs_open("storage", NVS_READWRITE, &my_handle);
+bool openHandle(nvs_handle_t *handle){
+    esp_err_t err = nvs_open("storage", NVS_READWRITE, handle);
     if (err != ESP_OK) {
         Serial.printf("Error (%s) opening NVS handle!\n", esp_err_to_name(err));
         return false;
@@ -46,7 +45,8 @@ bool openHandle(){
 }
 
 void setIntValue(int32_t value, const char *name){
-    if(!openHandle()){
+    nvs_handle_t my_handle;
+    if(!openHandle(&my_handle)){
         return;
     }
 
@@ -58,7 +58,8 @@ void setIntValue(int32_t value, const char *name){
 }
 
 void setStringValue(const char *value, const char *name){
-    if(!openHandle()){
+    nvs_handle_t my_handle;
+    if(!openHandle(&my_handle)){
         return;
     }
 
@@ -73,7 +74,8 @@ void setStringValue(const char *value, const char *name){
 int32_t getIntValue(const char *name){
     int32_t intVal = 0;
 
-    if(!openHandle()){
+    nvs_handle_t my_handle;
+    if(!openHandle(&my_handle)){
         return intVal;
     }
 
@@ -97,7 +99,8 @@ char* getStringValue(const char *name){
     char* defaultString = new char[1];
     strcpy(defaultString, "");
 
-    if(!openHandle()){
+    nvs_handle_t my_handle;
+    if(!openHandle(&my_handle)){
         return defaultString;
     }
 

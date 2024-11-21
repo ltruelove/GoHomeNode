@@ -29,7 +29,6 @@ void initSensors(){
 }
 
 float getTemperatureF(){
-      Serial.println(dht.readTemperature(true));
     return dht.readTemperature(true);
 }
 

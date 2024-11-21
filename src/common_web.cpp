@@ -100,6 +100,7 @@ void clearAllPreferences(AsyncWebServerRequest *request){
   request->send(200, "text/html", "Preferences Reset");
 
   delay(100);
+  Serial.println("Clear preferences command received, restarting");
   ESP.restart();
 }
 

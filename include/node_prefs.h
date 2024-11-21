@@ -6,6 +6,7 @@
 
 void clearPreferences();
 void saveNodeId(int id);
+void initPreferences();
 
 String getSSID();
 String getPass();
@@ -47,6 +48,5 @@ void setTogglePin(int _togglePin);
 void setMomentaryPin(int _momentaryPin);
 void setIsclosedOn(bool _isClosedOn);
 
-void clearPreferences();
 
 #endif
