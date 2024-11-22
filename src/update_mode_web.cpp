@@ -2,7 +2,7 @@
 #include "SPIFFS.h"
 #include "api_wrapper.h"
 #include "Update.h"
-#include <AsyncElegantOTA.h>
+#include <AsyncOTA.h>
 
 AsyncWebServer update_mode_server(80);
 
@@ -25,7 +25,7 @@ void launchUpdateModeWeb(){
     update_mode_server.on("/version", nodeVersion);
     update_mode_server.onNotFound(handleNotFound);
 
-    AsyncElegantOTA.begin(&update_mode_server);
+    AsyncOTA.begin(&update_mode_server);
 
     update_mode_server.begin();
 

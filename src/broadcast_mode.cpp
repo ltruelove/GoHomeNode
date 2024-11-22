@@ -68,13 +68,27 @@ void followInstructions(SwitchCommand inst){
     }
 }
 
-void OnDataRecv(const uint8_t * mac_addr, const uint8_t *incomingData, int len) { 
-    // Copies the sender mac address to a string
+String macToStr(const uint8_t *mac_addr){
     char macStr[18];
-    Serial.print("Packet received from: ");
     snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
             mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
+
+    return String(macStr);
+}
+
+void OnDataRecv(const uint8_t * mac_addr, const uint8_t *incomingData, int len) { 
+    // Copies the sender mac address to a string
+    String macStr = macToStr(mac_addr);
+
+    if(!esp_now_is_peer_exist(mac_addr)){
+        Serial.print("Rogue packet received from: ");
+        Serial.println(macStr);
+        return;
+    }
+
+    Serial.print("Packet received from: ");
     Serial.println(macStr);
+
     memcpy(&instructions, incomingData, sizeof(instructions));
     
     // store the reading for fetching later
@@ -120,6 +134,21 @@ void initBroadcast(){
 
     if(!esp_now_is_peer_exist(broadcastAddress)){
         addPeer(broadcastAddress);
+    }
+
+    Serial.println("Known Peers:");
+
+    // Iterate through the peer list
+    esp_now_peer_info_t peer_info;
+    esp_err_t result = esp_now_fetch_peer(true, &peer_info);
+    while (result == ESP_OK) {
+        // Print or store the MAC address of the peer
+        Serial.print("Peer MAC Address: ");
+        String macAddr = macToStr(peer_info.peer_addr);
+        Serial.println(macAddr);
+
+        // Fetch the next peer
+        result = esp_now_fetch_peer(false, &peer_info);
     }
 }
 

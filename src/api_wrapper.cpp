@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#include <AsyncTCP.h>
 #include <HTTPClient.h>
 
 #include "api_wrapper.h"
